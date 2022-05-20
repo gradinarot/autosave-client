@@ -1,0 +1,3 @@
+export default `
+<?xml version="1.0" encoding="UTF-8" ?><xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve"><pdf-info xmlns="http://www.pdftron.com/pdfinfo" version="2" import-version="4" /><fields /><annots><highlight page="0" rect="115.380,662.454,254.880,674.014" color="#FFB700" flags="print" name="d6575303-26fb-fef8-a6e9-85cd79056fb6" subject="Highlight" date="D:20220520080902+02'00'" opacity="0.5" creationdate="D:20220520080902+02'00'" coords="115.38000000000001,674.014,254.88000000000005,674.014,115.38000000000001,662.4540000000001,254.88000000000005,662.4540000000001"><trn-custom-data bytes="{&quot;trn-annot-preview&quot;:&quot;e in the Virtual Mechanics tutori&quot;}"/></highlight></annots><pages><defmtx matrix="1,0,0,-1,0,792" /></pages></xfdf>
+`

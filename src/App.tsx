@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useRef, useState } from "react";
+import "./App.css";
+import Receive from "./components/Receive";
+import Send from "./components/Send";
+
+const WEBSOCKET_ENDPOINT = process.env.REACT_APP_WEBSOCKET_ENDPOINT;
 
 function App() {
+  const socket = useRef<WebSocket>();
+  const [connected, setConnected] = useState(false);
+  const [responseData, setResponseData] = useState("");
+
+  useEffect(() => {
+    if (!WEBSOCKET_ENDPOINT) return;
+    socket.current = new WebSocket(WEBSOCKET_ENDPOINT);
+
+    socket.current.addEventListener("open", () => setConnected(true));
+    return () => {
+      if (socket.current) socket.current.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket.current) return;
+    socket.current.addEventListener("message", (event) => {
+      setResponseData(event.data);
+    });
+  }, []);
+
+  if (!socket.current || !connected) return null;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Send socket={socket.current} />
+      <Receive data={responseData} />
     </div>
   );
 }

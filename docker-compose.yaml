@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  socker-client:
+    build:
+      dockerfile: .Dockerfile
+    ports:
+      - 8181:3000
+    volumes:
+      - ./:/app
