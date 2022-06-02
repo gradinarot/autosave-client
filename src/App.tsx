@@ -1,37 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Receive from "./components/Receive";
 import Send from "./components/Send";
-
-const WEBSOCKET_ENDPOINT = process.env.REACT_APP_WEBSOCKET_ENDPOINT;
+import { useAutosaveWS } from "./hooks/useWebSocket";
 
 function App() {
-  const socket = useRef<WebSocket>();
-  const [connected, setConnected] = useState(false);
+  const { socket, connected } = useAutosaveWS();
   const [responseData, setResponseData] = useState("");
 
   useEffect(() => {
-    if (!WEBSOCKET_ENDPOINT) return;
-    socket.current = new WebSocket(WEBSOCKET_ENDPOINT);
+    if (!socket) return;
 
-    socket.current.addEventListener("open", () => setConnected(true));
-    return () => {
-      if (socket.current) socket.current.close();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!socket.current) return;
-    socket.current.addEventListener("message", (event) => {
+    socket.addEventListener("message", (event) => {
       setResponseData(event.data);
     });
-  }, []);
+  }, [socket]);
 
-  if (!socket.current || !connected) return null;
+  if (!socket || !connected) return null;
 
   return (
     <div className="App">
-      <Send socket={socket.current} />
+      <Send socket={socket} />
       <Receive data={responseData} />
     </div>
   );

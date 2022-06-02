@@ -9,8 +9,15 @@ import { useState } from "react";
 function Send({ socket }: { socket: WebSocket }) {
   const [customData, setCustomData] = useState("");
 
-  const handleSendData = (data: string) => {
-    socket.send(data);
+  const handleSendData = (annotationData: string) => {
+    const req = {
+      documentId: "random document id",
+      annotationData: annotationData,
+    };
+
+    if (socket.OPEN) {
+      socket.send(JSON.stringify(req));
+    }
   };
 
   return (
